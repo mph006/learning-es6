@@ -218,3 +218,52 @@ async function getFirstUser() {
         };
     }
 }
+
+This will force syncronous behavior so foo will return and bar will then return
+let foo = await getFoo();
+let bar = await getBar();
+
+to get them to fire at the same time 
+let [foo, bar] = await Promise.all([getFoo(), getBar()]);
+This wrapper promise will resolve only when all child promises return
+
+Another example working with promises
+
+function getUser () {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve({name: 'Tyler'}), 2000)
+  })
+}
+
+function handleGetUser () {  
+  getUser()
+    .then((user) => {
+      console.log('The user is: ', user)
+    })
+    .catch((error) => {
+      console.warn('Oh no there was an error: ', error)
+    })
+}
+
+But try this instead
+
+async function handleGetUser () {
+  try {
+    var user = await getUser()
+    console.log(user)
+  } catch (error) {
+    console.log('Error in handleGetUser', error)
+  }
+}
+
+You can write react classes as ES6 classes
+I dont really like the syntax thought
+
+1- youre no longer using create class, instead you create a class that extends React.Component
+2- Classes have constructor functions which initalize the object being returned from the class. This also means you much call super()
+3 - There arent commas between properties because its a class not an object
+4- proptypes are moved out of the class, and stateless functional components are as well
+
+When you use createCalss the this keyword is autobound, es6 classed must have this bound or use the arrow function.
+
+
