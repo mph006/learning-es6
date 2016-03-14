@@ -13,19 +13,30 @@ const ResultsContainer = React.createClass({
 			scores:[]
 		}
 	},
-	componentDidMount (){
-		//Fetch the players data from the state of the 'confirmBattleContainer' app route assignment
-		//console.log(this.props.location.state.playersInfo);
-		githubHelpers.battle(this.props.location.state.playersInfo)
-			//Promiseland
-			.then((scores) => {
-				this.setState({
-					scores:scores,
-					isLoading:false
-				})
-				//Watch the scope of 'this' again
-				//Arrow functions handle the scoping issues arounf this
+	async componentDidMount (){
+		// //Fetch the players data from the state of the 'confirmBattleContainer' app route assignment
+		// //console.log(this.props.location.state.playersInfo);
+		// githubHelpers.battle(this.props.location.state.playersInfo)
+		// 	//Promiseland
+		// 	.then((scores) => {
+		// 		this.setState({
+		// 			scores:scores,
+		// 			isLoading:false
+		// 		})
+		// 		//Watch the scope of 'this' again
+		// 		//Arrow functions handle the scoping issues arounf this
+		// 	})
+
+		try{
+			const scores = await githubHelpers.battle(this.props.location.state.playersInfo);
+			this.setState({
+				scores,
+				isLoading: false
 			})
+		}
+		catch(err){
+			console.log(`Error in ResultsContainer: ${err}`);
+		}
 	},
 	render (){
 		return (

@@ -20,17 +20,29 @@ function getTotalStars (repos){
 	return repos.data.reduce((prev,current) => prev+current.stargazers_count ,0);
 }
 
-function getPlayersData (player){
-	return getRepos(player.login)
-				//Chaining promises, because they are returned from getRepos
-				.then(getTotalStars)
-				//Basic arrow function example (no implict return)
-				.then((totalStars) => {
-					return {
-						followers: player.followers,
-						totalStars
-					}
-				})
+async function getPlayersData ({login, followers}){
+	// return getRepos(player.login)
+	// 			//Chaining promises, because they are returned from getRepos
+	// 			.then(getTotalStars)
+	// 			//Basic arrow function example (no implict return)
+	// 			.then((totalStars) => {
+	// 				return {
+	// 					followers: player.followers,
+	// 					totalStars
+	// 				}
+	// 			})
+
+	try{
+		const repos = await getRepos(login);
+		const totalStars = await getTotalStars(repos);
+		return {
+			followers,
+			totalStars
+		}
+	}
+	catch(err){
+		console.log(`Error in getPlayersData: ${err}`)
+	}
 }
 
 function calculateScores (players){
@@ -41,22 +53,42 @@ function calculateScores (players){
 	];
 }
 
-export function getPlayersInfo (players){
+export async function getPlayersInfo (players){
 	//Nested arrow functions and implict returns, gets a little hard to read...
-	return axios.all(players.map((username) => getUserInfo(username)))
-				.then((info) => info.map((user) =>  user.data ))
-				.catch((err) => console.log(err+" getPlayersInfo"));
+	// return axios.all(players.map((username) => getUserInfo(username)))
+	// 			.then((info) => info.map((user) =>  user.data ))
+	// 			.catch((err) => console.log(err+" getPlayersInfo"));
+
+	try{
+			//Making a super promise out of an array of promises
+		const info = await Promise.all(players.map((username) => getUserInfo(username)));
+		return info.map((user) => user.data);
+	}
+	catch(err){
+		console.log(`Error in getPlayersInfo: ${err}`);
+	}
 }
 
-export function battle (players){
-	const playerOneData = getPlayersData(players[0]);
-	const playerTwoData = getPlayersData(players[1]);
+export async function battle (players){
+
+	// const playerOneData = getPlayersData(players[0]);
+	// const playerTwoData = getPlayersData(players[1]);
 
 	//Axios .all fires when both of these variables are resolved, nice
-	//playerOne and Two data are actually promises so they have to be resolved
-	return axios.all([playerOneData,playerTwoData])
-				.then(calculateScores)
-				.catch((err) => console.log("Error in getPlayersInfo: "+err));
+	// //playerOne and Two data are actually promises so they have to be resolved
+	// return axios.all([playerOneData,playerTwoData])
+	// 			.then(calculateScores)
+	// 			.catch((err) => console.log("Error in getPlayersInfo: "+err));
+
+	try{
+		const playerOneData = getPlayersData(players[0]);
+		const playerTwoData = getPlayersData(players[1]);
+		const data = await Promise.all([playerOneData,playerTwoData]);
+		return await calculateScores(data);
+	}
+	catch (err){
+		console.log(`Error in battle: ${err}`);
+	}
 }
 
 

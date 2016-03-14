@@ -22,20 +22,36 @@ const ConfirmBattleContainer = React.createClass({
 		//console.log("In Battle: component will mount");
 	},
 	//Lifecycle event when the component loaded, good for event listeners and ajax calls
-	componentDidMount (){
+	async componentDidMount (){
 		//console.log("In Battle: component did mount");
 		const query = this.props.location.query;
 		//Scoping issues for "this"
 		// var that = this;
-		githubHelpers.getPlayersInfo([query.playerOne, query.playerTwo])
-			.then((players) => {
-				this.setState({
-					isLoading:false,
-					playersInfo:[players[0],players[1]]
-				})
-				//This will fix the scoping issues, but variable assignment will work too
-				//Use arrow function here
+		// githubHelpers.getPlayersInfo([query.playerOne, query.playerTwo])
+		// 	.then((players) => {
+		// 		this.setState({
+		// 			isLoading:false,
+		// 			playersInfo:[players[0],players[1]]
+		// 		})
+		// 		//This will fix the scoping issues, but variable assignment will work too
+		// 		//Use arrow function here
+		// 	})
+
+		//async example
+		try{
+			const players = await githubHelpers.getPlayersInfo([query.playerOne, query.playerTwo]);
+			this.setState({
+				isLoading: false,
+				playersInfo: [players[0],players[1]]
 			})
+		}
+		catch(err){
+			console.log(`Error in ConfirmBattleContainer: ${err}`)
+		}
+		
+
+
+
 	},
 	//Fired when the component recieves new props
 	componentWillReceiveProps (){

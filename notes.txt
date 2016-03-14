@@ -189,4 +189,32 @@ function getUser (username) {
   }
 }
 
+Async/Await
 
+Every async function you write will return a promise, and everything you await will ordinaraily be a promise
+
+Assuming getUsers() returns a promise
+
+function getFirstUser() {
+    return getUsers().then(function(users) {
+        return users[0].name;
+    }).catch(function(err) {
+        return {
+          name: 'default user'
+        };
+    });
+}
+
+We can now use await in ES6 to do the same thing
+And handle errors in the try/catch block
+
+async function getFirstUser() {
+    try {
+        let users = await getUsers();
+        return users[0].name;
+    } catch (err) {
+        return {
+            name: 'default user'
+        };
+    }
+}
