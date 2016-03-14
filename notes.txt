@@ -1,0 +1,99 @@
+Babel can handle JSX transforms and ES6 transforms as well 
+
+Javascript by default is function scoped
+This is the biggest difference between var and let
+Let allows you to have code which is block scoped
+So, anywhere you have a curly brace, you have a scope with let
+let will still hoist the variable to the top of the block, but not the top of the function as in var
+
+const is let, but const cane be re-assigned a new refrence.
+But it still can be immutable
+
+This will fly
+const user = {
+  name: 'Tyler',
+  age: 25
+}
+user.name = 'Joey'
+
+this will not fly
+
+const user = {
+  name: 'Tyler',
+  age: 25
+}
+user = {
+  name: 'Joey', 
+  age: 25
+}
+
+Always default with const, if youre mutating the variable use let, stay away from var if possible
+
+Import and export
+// math.js
+export function add (x,y) {
+  return x + y
+}
+export function multiply (x,y) {
+  return x * y
+}
+export function divide (x,y) {
+  return x / y
+}
+// main.js
+import { add, multiply } from './math'
+add(1,2) // 3
+multiply(3,4) // 12
+
+or you can use import * from './math' here to pull all the exports
+
+you can also have modules that only export single values using default
+
+export default function a (a,b,c){
+	
+}
+
+import a from './math'
+
+you can even mix named exports with default exports
+
+// math.js
+export function add (x,y) {
+  return x + y
+}
+export default function doAllTheMath (x,y,z) {
+  return x + y + x * x * y * z / x / y / z
+}
+// main.js
+import doAllTheMath, { add } from './math'
+doAllTheMath(1,2,3) // 4
+add(1,2) // 3
+
+Object Destructuring
+When youre passing props around to components, how do you know whats in props without defining proptypes?
+
+function register (props) {
+  var { onChangeEmail, email, onChangePassword, password, submit }  = props;
+  return (
+    <div>
+      <span>Email:</span>
+      <input type='text' onChange={onChangeEmail} value={email} />
+      <span>Password:</span>
+      <input type='text' onChange={onChangePassword} value={password} />
+      <button onClick={submit}>Submit</button>
+    </div>
+  )
+}
+
+This pulls properties from the props object and casts them to local variables (why not use let here?)
+
+This can be done with imports as well
+
+var ReactRouter = require('react-router');
+var Route = ReactRouter.Route;
+var Link = ReactRouter.Link;
+var Router = ReactRouter.Router;
+
+becomes
+var { Route, Link, Router } = require('react-router')
+
