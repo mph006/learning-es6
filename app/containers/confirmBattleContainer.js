@@ -10,7 +10,7 @@ const ConfirmBattleContainer = React.createClass({
 		router: React.PropTypes.object.isRequired
 	},
 	//Setting the component initial state
-	getInitialState: function(){
+	getInitialState (){
 		//console.log("In Battle: get initial state")
 		return {
 			isLoading: true,
@@ -18,30 +18,31 @@ const ConfirmBattleContainer = React.createClass({
 		}
 	},
 	//Preparing the component for mounting
-	componentWillMount: function(){
+	componentWillMount (){
 		//console.log("In Battle: component will mount");
 	},
 	//Lifecycle event when the component loaded, good for event listeners and ajax calls
-	componentDidMount: function(){
+	componentDidMount (){
 		//console.log("In Battle: component did mount");
 		const query = this.props.location.query;
 		//Scoping issues for "this"
 		// var that = this;
 		githubHelpers.getPlayersInfo([query.playerOne, query.playerTwo])
-			.then(function(players){
+			.then((players) => {
 				this.setState({
 					isLoading:false,
 					playersInfo:[players[0],players[1]]
 				})
 				//This will fix the scoping issues, but variable assignment will work too
-			}.bind(this));
+				//Use arrow function here
+			})
 	},
 	//Fired when the component recieves new props
-	componentWillReceiveProps: function(){
+	componentWillReceiveProps (){
 		//console.log("In Battle: component will recieve props");
 
 	},
-	handleInitiateBattle: function(){
+	handleInitiateBattle (){
 		this.context.router.push({
 			pathname: '/results',
 			//Keep the players info in the state when we push to the new route
@@ -51,11 +52,11 @@ const ConfirmBattleContainer = React.createClass({
 		})
 	},
 	//Fired when you navigate away or remove the component
-	componentWillUnmount: function(){
+	componentWillUnmount (){
 		//console.log("In Battle: component will unmount");
 	},
 	//Renders the component
-	render: function(){
+	render (){
 		//console.log("In Battle: rendering");
 		return(<ConfirmBattle 
 			isLoading={this.state.isLoading}

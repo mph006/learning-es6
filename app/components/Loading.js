@@ -12,7 +12,8 @@ const Loading = React.createClass({
 		speed: PropTypes.number
 	},
 
-	getInitialState: function(){
+	//Make this a concise object method
+	getInitialState (){
 		//Keep the original text as a variable in the scope
 
 		//This is not an antipattern, this is only seed data for the components internally controlled state
@@ -23,17 +24,17 @@ const Loading = React.createClass({
 	},
 
 	//Set the default props for this component if none are passed into it
-	getDefaultProps: function(){
+	getDefaultProps (){
 		return{
 			text: 'Loading',
 			speed: 300
 		}
 	},
 
-	componentDidMount: function(){
+	componentDidMount (){
 		const stopper = this.originalText+'...';
 		//This serves as an animator
-		this.interval = setInterval(function(){
+		this.interval = setInterval(() => {
 			if(this.state.text === stopper){
 				this.setState({
 					text:this.originalText
@@ -45,15 +46,16 @@ const Loading = React.createClass({
 				})
 			}
 		//Bind the scope to get access to the originalText variable
-		}.bind(this),this.props.speed)
+		//No need for bind here by way of the arrow function passing along the "this"
+		},this.props.speed)
 	},
 
-	componentWillUnmount: function(){
+	componentWillUnmount (){
 		//Clean up the interval loop when the component unmounts
 		clearInterval(this.interval);
 	},
 
-	render: function(){
+	render (){
 		return (
 			<div style={styles.container}>
 				<p style={styles.textContent}>{this.state.text}</p>

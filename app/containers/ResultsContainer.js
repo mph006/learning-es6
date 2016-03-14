@@ -13,20 +13,21 @@ const ResultsContainer = React.createClass({
 			scores:[]
 		}
 	},
-	componentDidMount: function(){
+	componentDidMount (){
 		//Fetch the players data from the state of the 'confirmBattleContainer' app route assignment
 		//console.log(this.props.location.state.playersInfo);
 		githubHelpers.battle(this.props.location.state.playersInfo)
 			//Promiseland
-			.then(function (scores){
+			.then((scores) => {
 				this.setState({
 					scores:scores,
 					isLoading:false
 				})
 				//Watch the scope of 'this' again
-			}.bind(this))
+				//Arrow functions handle the scoping issues arounf this
+			})
 	},
-	render: function(){
+	render (){
 		return (
 			<Results 
 				isLoading={this.state.isLoading} 

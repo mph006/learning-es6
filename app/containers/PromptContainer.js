@@ -12,19 +12,19 @@ const PromptContainer = React.createClass({
 		router: React.PropTypes.object.isRequired
 	},
 
-	getInitialState: function(){
+	getInitialState (){
 		return{
 			username:''
 		}
 	},
 
-	handleUpdateUser: function(e){
+	handleUpdateUser (e){
 		this.setState({
 			username:e.target.value
 		})
 	},
 
-	handleSubmitUser: function(e){
+	handleSubmitUser (e){
 		e.preventDefault();
 		const {username} = this.state;
 		this.setState({
@@ -45,7 +45,7 @@ const PromptContainer = React.createClass({
 		}
 	},
 
-	render:function(){
+	render (){
 		return(
 			<Prompt 
 				onSubmitUser={this.handleSubmitUser} 
