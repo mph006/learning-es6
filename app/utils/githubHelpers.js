@@ -2,16 +2,17 @@
 import axios from 'axios';
 const id="YOUR_CLIENT_ID";
 const sec="YOUR_SEC_ID";
-const param = "?client_id="+id+"&client_secret="+sec;
+const param = `?client_id=${id}&client_secret${sec}`;
 
-
-function getUserInfo(username){
+//example of default parameter passing
+function getUserInfo(username = 'mph006'){
 	//can add param here if you get a api key
-	return axios.get('https://api.github.com/users/'+username);
+
+	return axios.get(`https://api.github.com/users/${username+param}`);
 }
 
-function getRepos(username){
-	return axios.get('https://api.github.com/users/'+username+"/repos"+param+"&per_page=100");
+function getRepos(username = 'mph006'){
+	return axios.get(`https://api.github.com/users/${username}/repos${param}&per_page=100`);
 }
 
 function getTotalStars (repos){
@@ -27,7 +28,7 @@ function getPlayersData (player){
 				.then((totalStars) => {
 					return {
 						followers: player.followers,
-						totalStars: totalStars
+						totalStars
 					}
 				})
 }

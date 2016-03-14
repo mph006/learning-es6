@@ -30,18 +30,21 @@ const PromptContainer = React.createClass({
 		this.setState({
 			username:''
 		});
-
-		if(this.props.routeParams.playerOne){
+		//Concise object example. If they key is the same value as the object you dont need ot re-write it
+		//playerOne.playerOne is not needed here...
+		const {playerOne} = this.props.routeParams
+		if(playerOne){
 			this.context.router.push({
 				pathname: '/battle',
 				query:{
-					playerOne: this.props.routeParams.playerOne,
+					playerOne: playerOne,
 					playerTwo: username
 				}
 			})
 		}
 		else{
-			this.context.router.push('/playerTwo/'+username)
+			//Template strings example
+			this.context.router.push(`/playerTwo/${username}`);
 		}
 	},
 

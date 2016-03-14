@@ -4,12 +4,12 @@
 import React, {PropTypes} from 'react';
 
 //Stateless functional component example here
-function UserDetailsWrapper (props){
+function UserDetailsWrapper ({header, children}){
 	return (
 		<div className='col-sm-6'>
-			<p className='lead'>{props.header}</p>
+			<p className='lead'>{header}</p>
 			{/*Render any children of this element (userdetails back in confirmbattle*/}
-			{props.children}
+			{children}
 		</div>
 	)
 }
